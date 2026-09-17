@@ -15,10 +15,20 @@ import datetime
 import html
 import json
 import os
+import sys
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 
-DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bajalendario_data.json")
+# When packaged with PyInstaller (--onefile), __file__ resolves to a temporary
+# extraction folder that is wiped when the .exe closes - saving there would
+# silently lose all data. sys.executable's folder is the actual .exe location
+# and persists across runs, so use that instead whenever running frozen.
+if getattr(sys, "frozen", False):
+    APP_DIR = os.path.dirname(os.path.abspath(sys.executable))
+else:
+    APP_DIR = os.path.dirname(os.path.abspath(__file__))
+
+DATA_FILE = os.path.join(APP_DIR, "bajalendario_data.json")
 
 WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 MONTHS = [
